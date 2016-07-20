@@ -11,17 +11,115 @@
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
+        $nav = $('<div></div>');
+        $logo = $('<div>Twittler</div>');
+        $container = $('<div></div>');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
+        $nav.appendTo($body);
+        $logo.appendTo($nav);
+        $container.appendTo($body);
+
+        $nav.addClass('nav');
+        $logo.addClass('logo');
+        $container.addClass('container');
+
+        var index = 0;
+        checkStream(streams.home,index);
+      });
+
+      var checkStream = function(stream,index){
+        var limit = stream.length - 1;
+        while(index <= limit){
+          var tweet = stream[index];
+
+          console.log(tweet);
+
           var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
+          var $username = $('<div></div>');
+          var $message = $('<div></div>');
+          var $timestamp = $('<div></div>');
+
+          $tweet.addClass('tweet');
+
+          $username.addClass('username');
+          $message.addClass('message');
+          $timestamp.addClass('timestamp');
+
+          $username.text('@' + tweet.user);
+          $message.text(tweet.message);
+          $timestamp.text(calculateSince(tweet.created_at));
+
+          $username.appendTo($tweet);
+          $message.appendTo($tweet);
+          $timestamp.appendTo($tweet);
+
+          $tweet.prependTo('.container');
+
+          addUserProfileListener($username,tweet);
+
+          index++;
         }
 
-      });
+        // Automatically load new tweets by calling checkStream within checkStream
+        setTimeout(function(){
+          checkStream(stream,index);
+        },3000)
+      }
+
+      var addUserProfileListener = function($username,tweet) {
+        $username.on('click',function(){
+          $container.text('');
+          var user = streams.users[tweet.user];
+          console.log(user);
+          var index = 0;
+          checkStream(streams.users[tweet.user],index)
+        })
+      }
+
+      // Calculate the time since the tweet was created
+      var calculateSince = function(datetime) {
+          
+          var tTime = new Date(datetime);
+          var cTime = new Date();
+          var sinceMin = Math.round((cTime-tTime)/60000);
+          
+          if (sinceMin == 0) {
+            var sinceSec = Math.round((cTime-tTime)/1000);
+            if (sinceSec < 10) {
+              var since = 'less than 10 seconds ago';
+            } else if (sinceSec < 20) {
+              var since = 'less than 20 seconds ago';
+            } else {
+              var since = 'half a minute ago';
+            }
+          } else if (sinceMin == 1) {
+            var sinceSec = Math.round((cTime-tTime)/1000);
+            if (sinceSec == 30) {
+              var since = 'half a minute ago';
+            } else if (sinceSec < 60) {
+              var since = 'less than a minute ago';
+            } else {
+              var since = '1 minute ago';
+            }
+          } else if (sinceMin < 45) {
+            var since = sinceMin + ' minutes ago';
+          } else if (sinceMin > 44 && sinceMin < 60) {
+            var since = 'about 1 hour ago';
+          } else if (sinceMin < 1440) {
+            var sinceHr = Math.round(sinceMin/60);
+            if (sinceHr == 1) {
+              var since = 'about 1 hour ago';
+            } else {
+              var since = 'about ' + sinceHr + ' hours ago';
+            }
+          } else if (sinceMin > 1439 && sinceMin < 2880) {
+            var since = '1 day ago';
+          } else {
+            var sinceDay = Math.round(sinceMin/1440);
+            var since = sinceDay + ' days ago';
+          }
+          return since;
+      };
 
     </script>
   </body>

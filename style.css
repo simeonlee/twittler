@@ -1,0 +1,80 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400);
+@import url(https://fonts.googleapis.com/css?family=Lobster);
+
+html, body {
+	font-family: 'Roboto', sans-serif;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	display: flex; /* flexbox */
+	/*align-items: center;  flexbox center vertically */
+	justify-content: center; /* flexbox center horizontally */
+	background-color: #E4F1FE;
+}
+
+a {
+  text-decoration: none;
+}
+
+.nav {
+	height: 50px;
+	min-height: 50px;
+	max-height: 50px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	box-shadow: 0 0px 4px rgba(120, 120, 120, 0.6);
+	background-color: white;
+	display: flex; /* flexbox */
+	align-items: center; /* flexbox center vertically */
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.logo {
+	font-family: 'Lobster', cursive;
+	font-size: 30px;
+	color: #19B5FE;
+	margin-left: 10%;
+}
+
+.container {
+  height: 80%;
+  width: 80%;
+  margin: 50px 0 0 0;
+  padding: 20px;
+}
+
+
+.tweet {
+	margin: 1px 0;
+	padding: 10px;
+	background-color: rgba(255,255,255,0.8);
+	box-shadow: 0 1px 1px rgba(120, 120, 120, 0.6);
+	font-weight: 300;
+}
+
+.tweet:nth-child(1) {
+	border-radius: 5px 5px 0 0;
+}
+
+.tweet:nth-last-child(1) {
+	border-radius: 0 0 5px 5px;
+}
+
+.username {
+	cursor: pointer;
+	font-size: 0.8em;
+}
+
+.message {
+	font-size: 1.0em;
+	margin: 4px 0;
+}
+
+.timestamp {
+	color: #6C7A89;
+	font-size: 0.6em;
+}
